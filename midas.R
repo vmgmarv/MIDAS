@@ -54,7 +54,7 @@ pub_debt <- na.omit (pub_debt, "External_Debt_to_GDP")
 
 pub_debt_vec <- pub_debt[['External_Debt_to_GDP']]
 pub_debt_vec <- pub_debt_vec[!is.na(pub_debt_vec)]
-##################################################################################################
+################################################################################################## Initial Run
 
 mr <- midas_r(mlsd(NPL,2,gdpg)~mlsd(gdpg,1:2, gdpg), data=list(gdpg=gdp_vec, NPL=npl_vec), start = NULL)
 
@@ -69,12 +69,12 @@ pr2 <- predict(mrh_2, newdata = list(gdpg = gdp_vec, NPL = npl_vec))
 pr3 <- predict(mrh_3, newdata = list(gdpg = gdp_vec, NPL = npl_vec))
 q2f <- c(tail(pr, n = 1), tail(pr2, n = 1 ), tail(pr3, n = 1))
 
-##################################################################################################
+################################################################################################## Trying others
 
 mr2 <- midas_r(mlsd(NPL,2,Exchnange_rate)~mlsd(Exchnange_rate,5, NPL), 
                data=list(Exchnange_rate=ex_rate_vec, NPL=npl_vec), start = NULL)
 
-mr2 <- midas_r(mlsd(NPL,2,Exchnange_rate)~mlsd(Exchnange_rate,0:5, NPL), 
+mr2 <- midas_r(mlsd(NPL,1,Exchnange_rate)~mlsd(Exchnange_rate,0:12, NPL), 
                data=list(Exchnange_rate=ex_rate_vec, NPL=npl_vec), start = NULL)
 
 
@@ -83,8 +83,6 @@ summary(mr3)
 
 midas_r(mlsd(npl_vec,2,ex_rate_vec) ~mlsd(ex_rate_vec,0:5,npl_vec),start = list(x = c(1, 
                                                                                       -0.5), z = c(2, 0.5, -0.1)))
-
-midas_r(mlsd(gdp_vec,2,npl_vec) ~mlsd(npl_vec,2,npl_vec),start = NULL)
 
 
 trend = c(1:93)
